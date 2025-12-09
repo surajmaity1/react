@@ -7,7 +7,7 @@
  * @noflow
  * @nolint
  * @preventMunge
- * @generated SignedSource<<240d3e889cb22857ef10b94026622163>>
+ * @generated SignedSource<<88cfdf85fac472287b8dcf55bee57b16>>
  */
 
 "use strict";
@@ -306,81 +306,89 @@ function lazyInitializer(payload) {
 function useMemoCache(size) {
   return ReactSharedInternals.H.useMemoCache(size);
 }
+function useEffectEvent(callback) {
+  return ReactSharedInternals.H.useEffectEvent(callback);
+}
 var reportGlobalError =
-    "function" === typeof reportError
-      ? reportError
-      : function (error) {
-          if (
-            "object" === typeof window &&
-            "function" === typeof window.ErrorEvent
-          ) {
-            var event = new window.ErrorEvent("error", {
-              bubbles: !0,
-              cancelable: !0,
-              message:
-                "object" === typeof error &&
-                null !== error &&
-                "string" === typeof error.message
-                  ? String(error.message)
-                  : String(error),
-              error: error
-            });
-            if (!window.dispatchEvent(event)) return;
-          } else if (
-            "object" === typeof process &&
-            "function" === typeof process.emit
-          ) {
-            process.emit("uncaughtException", error);
-            return;
-          }
-          console.error(error);
+  "function" === typeof reportError
+    ? reportError
+    : function (error) {
+        if (
+          "object" === typeof window &&
+          "function" === typeof window.ErrorEvent
+        ) {
+          var event = new window.ErrorEvent("error", {
+            bubbles: !0,
+            cancelable: !0,
+            message:
+              "object" === typeof error &&
+              null !== error &&
+              "string" === typeof error.message
+                ? String(error.message)
+                : String(error),
+            error: error
+          });
+          if (!window.dispatchEvent(event)) return;
+        } else if (
+          "object" === typeof process &&
+          "function" === typeof process.emit
+        ) {
+          process.emit("uncaughtException", error);
+          return;
+        }
+        console.error(error);
+      };
+function addTransitionType() {}
+var ReactCompilerRuntime = { __proto__: null, c: useMemoCache },
+  Children = {
+    map: mapChildren,
+    forEach: function (children, forEachFunc, forEachContext) {
+      mapChildren(
+        children,
+        function () {
+          forEachFunc.apply(this, arguments);
         },
-  ReactCompilerRuntime = { __proto__: null, c: useMemoCache };
-exports.Children = {
-  map: mapChildren,
-  forEach: function (children, forEachFunc, forEachContext) {
-    mapChildren(
-      children,
-      function () {
-        forEachFunc.apply(this, arguments);
-      },
-      forEachContext
-    );
-  },
-  count: function (children) {
-    var n = 0;
-    mapChildren(children, function () {
-      n++;
-    });
-    return n;
-  },
-  toArray: function (children) {
-    return (
-      mapChildren(children, function (child) {
-        return child;
-      }) || []
-    );
-  },
-  only: function (children) {
-    if (!isValidElement(children))
-      throw Error(
-        "React.Children.only expected to receive a single React element child."
+        forEachContext
       );
-    return children;
-  }
-};
+    },
+    count: function (children) {
+      var n = 0;
+      mapChildren(children, function () {
+        n++;
+      });
+      return n;
+    },
+    toArray: function (children) {
+      return (
+        mapChildren(children, function (child) {
+          return child;
+        }) || []
+      );
+    },
+    only: function (children) {
+      if (!isValidElement(children))
+        throw Error(
+          "React.Children.only expected to receive a single React element child."
+        );
+      return children;
+    }
+  };
+exports.Activity = REACT_ACTIVITY_TYPE;
+exports.Children = Children;
 exports.Component = Component;
 exports.Fragment = REACT_FRAGMENT_TYPE;
 exports.Profiler = REACT_PROFILER_TYPE;
 exports.PureComponent = PureComponent;
 exports.StrictMode = REACT_STRICT_MODE_TYPE;
 exports.Suspense = REACT_SUSPENSE_TYPE;
+exports.ViewTransition = REACT_VIEW_TRANSITION_TYPE;
 exports.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE =
   ReactSharedInternals;
 exports.__COMPILER_RUNTIME = ReactCompilerRuntime;
 exports.act = function () {
   throw Error("act(...) is not supported in production builds of React.");
 };
+exports.addTransitionType = addTransitionType;
 exports.c = useMemoCache;
 exports.cache = function (fn) {
   return function () {
@@ -458,9 +466,7 @@ exports.createElement = function (type, config, children) {
 exports.createRef = function () {
   return { current: null };
 };
-exports.experimental_useEffectEvent = function (callback) {
-  return ReactSharedInternals.H.useEffectEvent(callback);
-};
+exports.experimental_useEffectEvent = useEffectEvent;
 exports.forwardRef = function (render) {
   return { $$typeof: REACT_FORWARD_REF_TYPE, render: render };
 };
@@ -510,7 +516,7 @@ exports.unstable_Scope = REACT_SCOPE_TYPE;
 exports.unstable_SuspenseList = REACT_SUSPENSE_LIST_TYPE;
 exports.unstable_TracingMarker = REACT_TRACING_MARKER_TYPE;
 exports.unstable_ViewTransition = REACT_VIEW_TRANSITION_TYPE;
-exports.unstable_addTransitionType = function () {};
+exports.unstable_addTransitionType = addTransitionType;
 exports.unstable_getCacheForType = function (resourceType) {
   var dispatcher = ReactSharedInternals.A;
   return dispatcher ? dispatcher.getCacheForType(resourceType) : resourceType();
@@ -538,6 +544,7 @@ exports.useDeferredValue = function (value, initialValue) {
 exports.useEffect = function (create, deps) {
   return ReactSharedInternals.H.useEffect(create, deps);
 };
+exports.useEffectEvent = useEffectEvent;
 exports.useId = function () {
   return ReactSharedInternals.H.useId();
 };
@@ -579,4 +586,4 @@ exports.useSyncExternalStore = function (
 exports.useTransition = function () {
   return ReactSharedInternals.H.useTransition();
 };
-exports.version = "19.2.0-native-fb-4082b0e7-20250828";
+exports.version = "19.3.0-native-fb-55480b4d-20251208";

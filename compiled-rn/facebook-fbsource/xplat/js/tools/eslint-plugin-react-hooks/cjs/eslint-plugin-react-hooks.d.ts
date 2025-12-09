@@ -1,11 +1,17 @@
 import * as estree from 'estree';
-import { Rule } from 'eslint';
+import { Rule, Linter } from 'eslint';
 
+type ReactHooksFlatConfig = {
+    plugins: {
+        react: any;
+    };
+    rules: Linter.RulesRecord;
+};
 declare const plugin: {
     meta: {
         name: string;
+        version: string;
     };
-    configs: {};
     rules: {
         'exhaustive-deps': {
             meta: {
@@ -52,6 +58,15 @@ declare const plugin: {
                     recommended: true;
                     url: string;
                 };
+                schema: {
+                    type: "object";
+                    additionalProperties: false;
+                    properties: {
+                        additionalHooks: {
+                            type: "string";
+                        };
+                    };
+                }[];
             };
             create(context: Rule.RuleContext): {
                 '*'(node: any): void;
@@ -61,7 +76,23 @@ declare const plugin: {
                 'CallExpression:exit'(node: estree.CallExpression & Rule.NodeParentExtension): void;
                 FunctionDeclaration(node: estree.FunctionDeclaration & Rule.NodeParentExtension): void;
                 ArrowFunctionExpression(node: estree.ArrowFunctionExpression & Rule.NodeParentExtension): void;
+                ComponentDeclaration(node: any): void;
+                HookDeclaration(node: any): void;
             };
+        };
+    };
+    configs: {
+        recommended: {
+            plugins: string[];
+            rules: Linter.RulesRecord;
+        };
+        'recommended-latest': {
+            plugins: string[];
+            rules: Linter.RulesRecord;
+        };
+        flat: {
+            recommended: ReactHooksFlatConfig;
+            "recommended-latest": ReactHooksFlatConfig;
         };
     };
 };
